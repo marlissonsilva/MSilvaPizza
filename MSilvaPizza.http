@@ -1,6 +1,35 @@
 @MSilvaPizza_HostAddress = http://localhost:5250
 
-GET {{MSilvaPizza_HostAddress}}/weatherforecast/
+POST {{MSilvaPizza_HostAddress}}/pizza/
+Content-Type: application/json
+
+{
+    "name": "Hawaii",
+    "isGlutenFree": false
+}
+
+###
+GET {{MSilvaPizza_HostAddress}}/pizza
+Accept: application/json
+
+###
+
+GET {{MSilvaPizza_HostAddress}}/pizza/1
+Accept: application/json
+
+###
+
+PUT {{MSilvaPizza_HostAddress}}/pizza/2
+Content-Type: application/json
+
+{
+    "id": 2,
+    "name": "Hawaiian",
+    "isGlutenFree": true
+}
+ 
+###
+DELETE {{MSilvaPizza_HostAddress}}/pizza/1
 Accept: application/json
 
 ###
