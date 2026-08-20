@@ -1,0 +1,6 @@
+@MSilvaPizza_HostAddress = http://localhost:5250
+
+GET {{MSilvaPizza_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
