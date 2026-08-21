@@ -9,18 +9,22 @@ namespace MSilvaPizza.Controllers;
 
 public class PizzaController : ControllerBase
 {
-    public PizzaController()
+    private readonly IPizzaService _pizzaService;
+    public PizzaController(IPizzaService pizzaService)
     {
-
+        _pizzaService = pizzaService;
     }
 
     [HttpGet]
-    public ActionResult<List<Pizza>> GetAll() => PizzaService.GetAll();
+    public async Task<ActionResult<List<Pizza>>> GetAll()
+    {
+        return await _pizzaService.GetAll();
+    }
 
     [HttpGet("{id}")]
-    public ActionResult<Pizza> Get(int id)
+    public async Task<ActionResult<Pizza>> Get(int id)
     {
-        var pizza = PizzaService.Get(id);
+        var pizza = await _pizzaService.GetById(id);
         if (pizza is null)
         {
             return NotFound();
@@ -29,35 +33,29 @@ public class PizzaController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(Pizza pizza)
+    public async Task<IActionResult> Create(Pizza pizza)
     {
-        PizzaService.Add(pizza);
-        return NoContent();
+        var newPizza = await _pizzaService.Create(pizza);
+        return CreatedAtAction(nameof(Get), new { id = newPizza.Id }, newPizza);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, Pizza pizza)
+    public async Task<IActionResult> Update(int id, Pizza pizza)
     {
         if (id != pizza.Id)
             return BadRequest();
 
-        var existingPizza = PizzaService.Get(id);
-        if (existingPizza is null)
-            return NotFound();
-        PizzaService.Update(pizza);
+        var updated = await _pizzaService.Update(id, pizza);
+        if (!updated) return NotFound();
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var pizza = PizzaService.Get(id);
-        if (pizza is null)
-        {
-            return NotFound();
-        }
+        var deleted = await _pizzaService.Delete(id);
 
-        PizzaService.Delete(id);
+        if (!deleted) return NotFound();
 
         return NoContent();
     }

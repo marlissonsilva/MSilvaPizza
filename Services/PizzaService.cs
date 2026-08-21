@@ -1,43 +1,48 @@
+using System.Data.Common;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using MSilvaPizza.Models;
 namespace MSilvaPizza.Services;
 
-public static class PizzaService
+public class PizzaService : IPizzaService
+
 {
-    static List<Pizza> Pizzas { get; }
-    static int nextId = 3;
-    static PizzaService()
+    private readonly PizzaDb _db;
+
+    public PizzaService(PizzaDb db)
     {
-        Pizzas = new List<Pizza>
-        {
-            new Pizza { Id = 1, Name = "Classic Italian", IsGlutenFree = false },
-            new Pizza { Id = 2, Name = "Veggie", IsGlutenFree = true }
-        };
+        _db = db;
+    }
+    public async Task<List<Pizza>> GetAll() => await _db.Pizzas.ToListAsync();
+
+    public async Task<Pizza?> GetById(int id) => await _db.Pizzas.FindAsync(id);
+    public async Task<Pizza> Create(Pizza pizza)
+    {
+        _db.Pizzas.Add(pizza);
+        await _db.SaveChangesAsync();
+        return pizza;
     }
 
-    public static List<Pizza> GetAll() => Pizzas;
-
-    public static Pizza? Get(int id) => Pizzas.FirstOrDefault(p => p.Id == id);
-    public static void Add(Pizza pizza)
+    public async Task<bool> Delete(int id)
     {
-        pizza.Id = nextId++;
-        Pizzas.Add(pizza);
-    }
-
-    public static void Delete(int id)
-    {
-        var pizza = Get(id);
+        var pizza = await _db.Pizzas.FindAsync(id);
         if (pizza is null)
-            return;
+            return false;
 
-        Pizzas.Remove(pizza);
+        _db.Pizzas.Remove(pizza);
+        await _db.SaveChangesAsync();
+        return true;
     }
 
-    public static void Update(Pizza pizza)
+    public async Task<bool> Update(int id, Pizza pizza)
     {
-        var index = Pizzas.FindIndex(p => p.Id == pizza.Id);
-        if (index == -1)
-            return;
+        var existingPizza = await _db.Pizzas.FindAsync(id);
+        if (existingPizza is null)
+            return false;
 
-        Pizzas[index] = pizza;
+        existingPizza.Name = pizza.Name;
+        existingPizza.IsGlutenFree = pizza.IsGlutenFree;
+        await _db.SaveChangesAsync();
+        return true;
     }
 }
