@@ -1,2 +1,9 @@
 /bin
 /obj
+
+# Bancos de dados SQLite
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3

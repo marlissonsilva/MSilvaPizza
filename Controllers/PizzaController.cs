@@ -22,9 +22,9 @@ public class PizzaController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Pizza>> Get(int id)
+    public async Task<ActionResult<Pizza>> Get(Guid uuid)
     {
-        var pizza = await _pizzaService.GetById(id);
+        var pizza = await _pizzaService.GetById(uuid);
         if (pizza is null)
         {
             return NotFound();
@@ -36,24 +36,24 @@ public class PizzaController : ControllerBase
     public async Task<IActionResult> Create(Pizza pizza)
     {
         var newPizza = await _pizzaService.Create(pizza);
-        return CreatedAtAction(nameof(Get), new { id = newPizza.Id }, newPizza);
+        return CreatedAtAction(nameof(Get), new { id = newPizza.Uuid }, newPizza);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, Pizza pizza)
+    public async Task<IActionResult> Update(Guid uuid, Pizza pizza)
     {
-        if (id != pizza.Id)
+        if (uuid != pizza.Uuid)
             return BadRequest();
 
-        var updated = await _pizzaService.Update(id, pizza);
+        var updated = await _pizzaService.Update(uuid, pizza);
         if (!updated) return NotFound();
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid uuid)
     {
-        var deleted = await _pizzaService.Delete(id);
+        var deleted = await _pizzaService.Delete(uuid);
 
         if (!deleted) return NotFound();
 

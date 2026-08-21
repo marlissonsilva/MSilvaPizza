@@ -15,7 +15,7 @@ public class PizzaService : IPizzaService
     }
     public async Task<List<Pizza>> GetAll() => await _db.Pizzas.ToListAsync();
 
-    public async Task<Pizza?> GetById(int id) => await _db.Pizzas.FindAsync(id);
+    public async Task<Pizza?> GetById(Guid uuid) => await _db.Pizzas.FindAsync(uuid);
     public async Task<Pizza> Create(Pizza pizza)
     {
         _db.Pizzas.Add(pizza);
@@ -23,9 +23,9 @@ public class PizzaService : IPizzaService
         return pizza;
     }
 
-    public async Task<bool> Delete(int id)
+    public async Task<bool> Delete(Guid uuid)
     {
-        var pizza = await _db.Pizzas.FindAsync(id);
+        var pizza = await _db.Pizzas.FindAsync(uuid);
         if (pizza is null)
             return false;
 
@@ -34,9 +34,9 @@ public class PizzaService : IPizzaService
         return true;
     }
 
-    public async Task<bool> Update(int id, Pizza pizza)
+    public async Task<bool> Update(Guid uuid, Pizza pizza)
     {
-        var existingPizza = await _db.Pizzas.FindAsync(id);
+        var existingPizza = await _db.Pizzas.FindAsync(uuid);
         if (existingPizza is null)
             return false;
 
