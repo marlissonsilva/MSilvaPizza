@@ -42,6 +42,12 @@ public class PizzaService : IPizzaService
 
         existingPizza.Name = pizza.Name;
         existingPizza.IsGlutenFree = pizza.IsGlutenFree;
+        existingPizza.Description = pizza.Description;
+        existingPizza.DoughType = pizza.DoughType;
+        existingPizza.Width = pizza.Width;
+        existingPizza.ImageUrl = pizza.ImageUrl;
+        existingPizza.Price = pizza.Price;
+        existingPizza.Ingredients = pizza.Ingredients;
         await _db.SaveChangesAsync();
         return true;
     }

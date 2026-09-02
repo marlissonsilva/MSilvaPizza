@@ -4,8 +4,20 @@ POST {{MSilvaPizza_HostAddress}}/pizza/
 Content-Type: application/json
 
 {
-    "name": "Hawaii",
-    "isGlutenFree": false
+  "name": "Margherita Especial",
+  "isGlutenFree": false,
+  "description": "A clássica italiana com muçarela de búfala fresca, tomates selecionados e folhas de manjericão.",
+  "width": "35cm",
+  "doughType": "Massa Fina",
+  "ingredients": [
+    "Molho de tomate artesanal",
+    "Muçarela de búfala",
+    "Tomate cereja",
+    "Manjericão fresco",
+    "Azeite extra virgem"
+  ],
+  "price": 59.90,
+  "imageUrl": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500"
 }
 
 ###
@@ -14,22 +26,22 @@ Accept: application/json
 
 ###
 
-GET {{MSilvaPizza_HostAddress}}/pizza/1
+GET {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
 Accept: application/json
 
 ###
 
-PUT {{MSilvaPizza_HostAddress}}/pizza/2
+PUT {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
 Content-Type: application/json
 
 {
-    "id": 2,
-    "name": "Hawaiian",
-    "isGlutenFree": true
+    "uuid": "80b463ae-36c6-4477-9d52-88dee32cf30a",
+    "name": "Mussarela",
+    "isGlutenFree": true,
 }
  
 ###
-DELETE {{MSilvaPizza_HostAddress}}/pizza/1
+DELETE {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
 Accept: application/json
 
 ###

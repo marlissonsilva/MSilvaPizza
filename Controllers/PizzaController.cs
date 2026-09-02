@@ -21,7 +21,7 @@ public class PizzaController : ControllerBase
         return await _pizzaService.GetAll();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{uuid}")]
     public async Task<ActionResult<Pizza>> Get(Guid uuid)
     {
         var pizza = await _pizzaService.GetById(uuid);
@@ -36,10 +36,10 @@ public class PizzaController : ControllerBase
     public async Task<IActionResult> Create(Pizza pizza)
     {
         var newPizza = await _pizzaService.Create(pizza);
-        return CreatedAtAction(nameof(Get), new { id = newPizza.Uuid }, newPizza);
+        return CreatedAtAction(nameof(Get), new { uuid = newPizza.Uuid }, newPizza);
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{uuid}")]
     public async Task<IActionResult> Update(Guid uuid, Pizza pizza)
     {
         if (uuid != pizza.Uuid)
@@ -50,7 +50,7 @@ public class PizzaController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{uuid}")]
     public async Task<IActionResult> Delete(Guid uuid)
     {
         var deleted = await _pizzaService.Delete(uuid);
