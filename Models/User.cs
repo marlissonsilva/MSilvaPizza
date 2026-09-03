@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 namespace MSilvaPizza.Models;
 
+[Index(nameof(Username), IsUnique = true)]
 public class User
 {
     [Key]
