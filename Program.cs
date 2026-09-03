@@ -21,7 +21,15 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSqlite<PizzaDb>(connectionString);
+// Configurar pasta especifica de migrations para cada tabela
+builder.Services.AddSqlite<PizzaDb>(connectionString, sqliteOptions =>
+{
+    sqliteOptions.MigrationsHistoryTable("__EFMigrationsHistory_Pizza");
+});
+builder.Services.AddSqlite<UserDb>(connectionString, sqliteOptions =>
+{
+    sqliteOptions.MigrationsHistoryTable("__EFMigrationsHistory_User");
+});
 
 builder.Services.AddScoped<IPizzaService, PizzaService>();
 
