@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
     policy =>
     {
-        policy.WithOrigins("http://localhost:5173").WithMethods("GET", "POST").AllowAnyHeader();
+        policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
     });
 });
 
@@ -32,6 +32,7 @@ builder.Services.AddSqlite<UserDb>(connectionString, sqliteOptions =>
 });
 
 builder.Services.AddScoped<IPizzaService, PizzaService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
