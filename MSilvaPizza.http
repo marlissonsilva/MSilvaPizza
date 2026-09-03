@@ -44,10 +44,11 @@ Content-Type: application/json
 DELETE {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
 Accept: application/json
 
-# USERS
 
-###
-POST {{MSilvaPizza_HostAddress}}/user
+# ________________USERS__________________________________________________
+
+### CRIAR
+POST {{MSilvaPizza_HostAddress}}/user/
 Content-Type: application/json
 
 {
@@ -55,11 +56,20 @@ Content-Type: application/json
   "password": "passowrd"
 }
 
-###
+### LOGAR
+POST {{MSilvaPizza_HostAddress}}/user/login
+Content-Type: application/json
+
+{
+  "username": "Fulano",
+  "password": "passowrd"
+}
+
+### BUSCAR
 GET {{MSilvaPizza_HostAddress}}/user/aca6b28a-6eb0-47cd-98a7-e62a66c12104
 Accept: application/json
 
-###
+### ATUALIZAR
 PATCH  {{MSilvaPizza_HostAddress}}/user/aca6b28a-6eb0-47cd-98a7-e62a66c12104
 Content-Type: application/json
 
