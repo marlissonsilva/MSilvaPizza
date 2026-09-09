@@ -26,22 +26,24 @@ Accept: application/json
 
 ###
 
-GET {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
+GET {{MSilvaPizza_HostAddress}}/pizza/151a3764-7548-447d-b063-bf58cff1dcc2
 Accept: application/json
 
 ###
 
-PATCH  {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
+PATCH  {{MSilvaPizza_HostAddress}}/pizza/151a3764-7548-447d-b063-bf58cff1dcc2
 Content-Type: application/json
 
 {
-    "uuid": "80b463ae-36c6-4477-9d52-88dee32cf30a",
-    "name": "Mussarela",
-    "isGlutenFree": true,
+    "uuid": "151a3764-7548-447d-b063-bf58cff1dcc2",
+    "name": "Portuguesa",
+    "isGlutenFree": false,
+    "description": "A clássica pizza portuguesa com presunto, ovos, cebola e azeitonas.",
+    "price": 69.90
 }
  
 ###
-DELETE {{MSilvaPizza_HostAddress}}/pizza/80b463ae-36c6-4477-9d52-88dee32cf30a
+DELETE {{MSilvaPizza_HostAddress}}/pizza/9727709c-660d-4765-a812-19583334c900
 Accept: application/json
 
 
@@ -62,19 +64,19 @@ Content-Type: application/json
 
 {
   "username": "Fulano",
-  "password": "passowrd"
+  "password": "passowrd2"
 }
 
 ### BUSCAR
-GET {{MSilvaPizza_HostAddress}}/user/aca6b28a-6eb0-47cd-98a7-e62a66c12104
+GET {{MSilvaPizza_HostAddress}}/user/E052CCDC-A238-48D5-8250-F6FDA3B21AC7
 Accept: application/json
 
 ### ATUALIZAR
-PATCH  {{MSilvaPizza_HostAddress}}/user/aca6b28a-6eb0-47cd-98a7-e62a66c12104
+PATCH  {{MSilvaPizza_HostAddress}}/user/E052CCDC-A238-48D5-8250-F6FDA3B21AC7
 Content-Type: application/json
 
 {
-  "uuid": "aca6b28a-6eb0-47cd-98a7-e62a66c12104",
+  "uuid": "E052CCDC-A238-48D5-8250-F6FDA3B21AC7",
   "username": "Fulano",
   "password": "passowrd2"
 }

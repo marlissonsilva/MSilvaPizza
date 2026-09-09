@@ -40,13 +40,37 @@ public class PizzaController : ControllerBase
     }
 
     [HttpPatch("{uuid}")]
-    public async Task<IActionResult> Update(Guid uuid, Pizza pizza)
+    public async Task<IActionResult> Update(Guid uuid, [FromBody] UpdatePizzaDto patch)
     {
-        if (uuid != pizza.Uuid)
-            return BadRequest();
+        var existingPizza = await _pizzaService.GetById(uuid);
+        if (existingPizza is null)
+            return NotFound();
 
-        var updated = await _pizzaService.Update(uuid, pizza);
-        if (!updated) return NotFound();
+        if (patch.Name != null)
+            existingPizza.Name = patch.Name;
+
+        if (patch.IsGlutenFree != null)
+            existingPizza.IsGlutenFree = patch.IsGlutenFree.HasValue ? patch.IsGlutenFree.Value : existingPizza.IsGlutenFree;
+
+        if (patch.Description != null)
+            existingPizza.Description = patch.Description;
+
+        if (patch.Width != null)
+            existingPizza.Width = patch.Width;
+
+        if (patch.DoughType != null)
+            existingPizza.DoughType = patch.DoughType;
+
+        if (patch.Ingredients != null)
+            existingPizza.Ingredients = patch.Ingredients;
+
+        if (patch.Price != null)
+            existingPizza.Price = patch.Price.HasValue ? patch.Price.Value : existingPizza.Price;
+
+        if (patch.ImageUrl != null)
+            existingPizza.ImageUrl = patch.ImageUrl;
+
+        await _pizzaService.Update(uuid, existingPizza);
         return NoContent();
     }
 
