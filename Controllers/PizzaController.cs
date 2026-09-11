@@ -1,6 +1,7 @@
 using MSilvaPizza.Models;
 using MSilvaPizza.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MSilvaPizza.Controllers;
 
@@ -21,6 +22,7 @@ public class PizzaController : ControllerBase
         return await _pizzaService.GetAll();
     }
 
+    [Authorize]
     [HttpGet("{uuid}")]
     public async Task<ActionResult<Pizza>> Get(Guid uuid)
     {
@@ -32,6 +34,7 @@ public class PizzaController : ControllerBase
         return pizza;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(Pizza pizza)
     {
@@ -39,6 +42,7 @@ public class PizzaController : ControllerBase
         return CreatedAtAction(nameof(Get), new { uuid = newPizza.Uuid }, newPizza);
     }
 
+    [Authorize]
     [HttpPatch("{uuid}")]
     public async Task<IActionResult> Update(Guid uuid, [FromBody] UpdatePizzaDto patch)
     {
@@ -74,6 +78,7 @@ public class PizzaController : ControllerBase
         return NoContent();
     }
 
+    [Authorize]
     [HttpDelete("{uuid}")]
     public async Task<IActionResult> Delete(Guid uuid)
     {

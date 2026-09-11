@@ -1,9 +1,16 @@
 using MSilvaPizza.Models;
 using MSilvaPizza.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MSilvaPizza.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 
@@ -52,6 +59,7 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
@@ -64,6 +72,42 @@ public class UserController : ControllerBase
         if (!isValidPassword)
             return Unauthorized(new { message = "Usuário ou senha incorretos" });
 
+        var token = GenerateJwtToken(user);
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddHours(1)
+        };
+
+        Response.Cookies.Append("jwt_token", token, cookieOptions);
+
         return Ok(new { message = "Usuário autenticado com sucesso" });
+    }
+
+    private string GenerateJwtToken(User user)
+    {
+        var keyString = _config["Jwt:Secret"];
+        var key = Encoding.ASCII.GetBytes(keyString);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(
+            [
+                new Claim(ClaimTypes.NameIdentifier, user.Uuid.ToString()),
+                new Claim(ClaimTypes.Name, user.Username)
+            ]),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        return tokenHandler.WriteToken(token);
     }
 }
