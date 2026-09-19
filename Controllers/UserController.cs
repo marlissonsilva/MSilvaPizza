@@ -35,6 +35,7 @@ public class UserController : ControllerBase
         return user;
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] RegisterRequest request)
     {
@@ -59,6 +60,24 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        Response.Cookies.Delete("jwt_token");
+        return Ok(new { message = "Usuário deslogado com sucesso" });
+    }
+
+    [HttpGet("me")]
+    public async Task<IActionResult> Me()
+    {
+        var jwtToken = Request.Cookies["jwt_token"];
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return Unauthorized(new { message = "Token JWT não encontrado" });
+        }
+        return Ok(new { message = "Sesseão ativa" });
+    }
+
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
@@ -79,7 +98,7 @@ public class UserController : ControllerBase
             HttpOnly = true,
             Secure = false,
             SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddHours(1)
+            Expires = DateTime.UtcNow.AddMinutes(1)
         };
 
         Response.Cookies.Append("jwt_token", token, cookieOptions);

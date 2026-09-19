@@ -10,4 +10,6 @@ public interface IUserService
     Task<bool> UsernameExists(string username);
     Task<bool> Update(Guid uuid, User updatedUser, string? newPlainTextPassword);
     Task<bool> Login(User user, string plainTextPassword, string hashFromDatabase);
+    Task<bool> Logout(User user);
+    Task<bool> Me(User user);
 }

@@ -48,4 +48,14 @@ public class UserService : IUserService
         var result = _passwordHasher.VerifyHashedPassword(user, hashFromDatabase, plainTextPassword);
         return result == PasswordVerificationResult.Success;
     }
+    public async Task<bool> Logout(User user)
+    {
+        return true;
+    }
+    public async Task<bool> Me(User user)
+    {
+        return true;
+    }
+
+
 }
